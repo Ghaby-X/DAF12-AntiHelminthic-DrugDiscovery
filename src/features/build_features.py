@@ -3,6 +3,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import Descriptors, Lipinski
 import pandas as pd
+from mordred import Calculator, descriptors
 
 
 # --------------------------------------------------------------
@@ -51,3 +52,27 @@ def morgan_descriptors(smiles: list):
     fps_array = [np.array(fp) for fp in fps]
     column_names = ['morgan_' + str(i) for i in range(len(fps_array[0]))]
     return pd.DataFrame(fps_array, columns=column_names)
+
+# --------------------------------------------------------------
+# float_converter
+# --------------------------------------------------------------
+def float_converter(x):
+        if not isinstance(x, (float, int, bool)):
+            try:
+                return float(x)
+            except ValueError:
+                return np.nan
+        else:
+            return x
+        
+        
+# --------------------------------------------------------------
+# Build mordred descriptors
+# --------------------------------------------------------------
+def mordred_descriptors(smiles: list):
+    mols = [Chem.MolFromSmiles(smi) for smi in smiles]
+    
+    calc = Calculator(descriptors, ignore_3D=True)
+    df_mordred = calc.pandas(mols)
+    return df_mordred.applymap(float_converter)
+    
