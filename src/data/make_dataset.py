@@ -11,16 +11,16 @@ def load_data_from_raw(path):
     
     # define columns to keep
     if "S_STERCORALIS" in path:
-        KEEP_COLUMNS = ['PUBCHEM_EXT_DATASOURCE_SMILES', 'PUBCHEM_ACTIVITY_OUTCOME', 'Activation at 6.8 uM']
+        KEEP_COLUMNS = ['PUBCHEM_EXT_DATASOURCE_SMILES', 'PUBCHEM_ACTIVITY_OUTCOME','PUBCHEM_ACTIVITY_SCORE', 'Activation at 6.8 uM']
     else:
-        KEEP_COLUMNS = ['PUBCHEM_EXT_DATASOURCE_SMILES', 'PUBCHEM_ACTIVITY_OUTCOME', 'Average Activation at 6.8 uM']
+        KEEP_COLUMNS = ['PUBCHEM_EXT_DATASOURCE_SMILES', 'PUBCHEM_ACTIVITY_OUTCOME', 'PUBCHEM_ACTIVITY_SCORE', 'Average Activation at 6.8 uM']
         
     # map activities
     Activity = { 'Active': 1, 'Inactive': 0}
     df['PUBCHEM_ACTIVITY_OUTCOME'] = df['PUBCHEM_ACTIVITY_OUTCOME'].map(Activity)
     
     new_df = df[KEEP_COLUMNS]
-    new_df.columns = ['SMILES', 'ACTIVITY', 'ACTIVATION_AT_6.8uM']
+    new_df.columns = ['SMILES', 'ACTIVITY', 'ACTIVITY_SCORE' ,'ACTIVATION_AT_6.8uM']
     
     
     return new_df
